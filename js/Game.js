@@ -243,11 +243,16 @@ class Game {
     gameOver(gameStatus) {
         const gameOverMsg = document.querySelector(`#game-over-message`);
         const overlay = document.querySelector(`#overlay`);
+        // Added correct phrase to be displayed for game lost status
+        const answer = document.createElement(`h1`);
+        answer.id = `answer`;
+        answer.textContent = `The correct answer is, "${this.activePhrase.phrase}"`;
+
         // Return overlay to display end of game message
         overlay.style.display = `flex`;
         // Sets end of game message on screen
         gameStatus ? (gameOverMsg.textContent = `You've won`, overlay.className = `win`)
-            : (gameOverMsg.textContent = `Sorry, you've lost. try again!`, overlay.className = `lose`);
+            : (gameOverMsg.textContent = `Sorry, you've lost. Try again!`, overlay.className = `lose`, overlay.insertBefore(answer, gameOverMsg.nextSibling));
         this.reset();
         // Boolean value to prevent keypress in app.js file   
         this.gameEnded = true;
