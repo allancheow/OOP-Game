@@ -15,6 +15,7 @@ startBtn.addEventListener( `click`, e =>{
 // Cycles through the array to listen for any onscreen click 
 letters.forEach( letter => letter.addEventListener( `click`, e => game.handleInteraction(letter)) );
 
+// Keydown listener for any manual key entry
 document.addEventListener( `keydown`, e => {
     letters.forEach( letter => letter.textContent === e.key ? game.handleInteraction(letter) : null );
 });
