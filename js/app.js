@@ -18,5 +18,5 @@ letters.forEach( letter => letter.addEventListener( `click`, e => game.handleInt
 // Keydown listener for any manual key entry
 document.addEventListener( `keydown`, e => {
     // Looks for boolean value to enable keyboard entry during game play
-    !game.gameEnded ? letters.forEach( letter => letter.textContent === e.key ? game.handleInteraction(letter) : null ) : null;
+    !game.gameEnded ? letters.forEach( letter => letter.textContent === e.key.toLowerCase() ? game.handleInteraction(letter) : null ) : null;
 });
