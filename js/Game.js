@@ -7,6 +7,7 @@ class Game {
         this.missed = 0;
         this.phrases = this.createPhrases();
         this.activePhrase = null;
+        this.gameEnded = false;
     }
 
     /**
@@ -246,8 +247,10 @@ class Game {
         overlay.style.display = `flex`;
         // Sets end of game message on screen
         gameStatus ? (gameOverMsg.textContent = `You've won`, overlay.className = `win`)
-            : (gameOverMsg.textContent = `You've lost, try again.`, overlay.className = `lose`);
+            : (gameOverMsg.textContent = `Sorry, you've lost. try again!`, overlay.className = `lose`);
         this.reset();
+        // Boolean value to prevent keypress in app.js file   
+        this.gameEnded = true;
     };
     
     /**
