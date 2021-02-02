@@ -56,7 +56,7 @@ class Game {
             new Phrase(`A penny for your thoughts`),
             new Phrase(`A penny saved is a penny earned`),
             new Phrase(`A perfect storm`),
-            new Phrase(`A picture is worth 1000 words`),
+            new Phrase(`A picture is worth a thousand words`),
             new Phrase(`Actions speak louder than words`),
             new Phrase(`Add insult to injury`),
             new Phrase(`Barking up the wrong tree`),
@@ -175,6 +175,16 @@ class Game {
     };
 
     /**
+    * Begins game by selecting a random phrase and displaying it to user
+    */
+    startGame() {
+        const overlay = document.querySelector(`#overlay`);
+        overlay.style.display = `none`;
+        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase.addPhraseToDisplay();
+    };
+
+    /**
     * Selects random phrase from phrases property
     * @return {Object} Phrase object chosen to be used
     */
@@ -184,12 +194,76 @@ class Game {
     };
 
     /**
-    * Begins game by selecting a random phrase and displaying it to user
+    * Handles onscreen keyboard button clicks
+    * @param (HTMLButtonElement) button - The clicked button element
     */
-    startGame() {
-        const overlay = document.querySelector(`#overlay`);
-        overlay.style.display = `none`;
-        this.activePhrase = this.getRandomPhrase();
-        this.activePhrase.addPhraseToDisplay();
+    handleInteraction(button) {
+        // Disables selected button
+        button.disabled = true;
+        if ( this.activePhrase.checkLetter(button.textContent) ) {
+            // Update class for correct guess and display on screen
+            button.className = `chosen`;
+            this.activePhrase.showMatchedLetter(button.textContent)
+            // Check if all letters are diaplayed for win
+            this.checkForWin() ? this.gameOver(this.checkForWin()) : false;
+        } else {
+            // Update class for wrong guess and remove life
+            button.className = `wrong`;
+            this.removeLife();
+        }
     };
+
+    /**
+    * Checks for winning move
+    * @return {boolean} True if game has been won, false if game wasn't
+    won
+    */
+    checkForWin() {
+        const hiddenLetter = document.querySelectorAll(`.hide`).length;
+        return hiddenLetter === 0 ? true : false;
+    };
+
+    /**
+    * Increases the value of the missed property
+    * Removes a life from the scoreboard
+    * Checks if player has remaining lives and ends game if player is out
+    */
+    removeLife() {
+        const lives = document.querySelector(`.tries img[src='images/liveHeart.png']`);
+        lives.src = `images/lostHeart.png`;
+        this.missed++;
+        return this.missed === 5 ? this.gameOver(false) : false;
+    };
+
+    /**
+    * Displays game over message
+    * @param {boolean} gameWon - Whether or not the user won the game
+    */
+    gameOver(gameStatus) {
+        const gameOverMsg = document.querySelector(`#game-over-message`);
+        const overlay = document.querySelector(`#overlay`);
+        // Return overlay to display end of game message
+        overlay.style.display = `flex`;
+        // Sets end of game message on screen
+        gameStatus ? (gameOverMsg.textContent = `You've won`, overlay.className = `win`)
+            : (gameOverMsg.textContent = `You've lost, try again.`, overlay.className = `lose`);
+        this.reset();
+    };
+    
+    /**
+    * Reset game board to ready next game
+    */
+    reset() {
+        const lis = document.querySelectorAll(`#phrase li`);
+        const letters = document.querySelectorAll(`#qwerty button`);
+        const lives = document.querySelectorAll(`.tries img[src='images/lostHeart.png']`);
+        // Resets missed count
+        this.missed = 0;
+        // Deletes/removes all <li>'s within phrase <div>
+        lis.forEach( li => li.remove() );
+        // Resets on screen key board
+        letters.forEach( letter => (letter.className = `key`, letter.disabled = false) );
+        // Update img src to full Hearts
+        lives.forEach( live => live.src = `images/liveHeart.png` );
+    }
 }
