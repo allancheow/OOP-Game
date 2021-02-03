@@ -19,7 +19,8 @@
             li.textContent = this.phrase[i];
             // Used chained ternary operator to check for letter, space or apostrophe and set appropriate class to each character
             li.textContent === ` ` ? li.className = `space`
-                : li.textContent === `'` ? li.className = `show letter ${this.phrase[i]}` 
+                : li.textContent === `'` ? li.className = `show letter ${this.phrase[i]}`
+                : li.textContent === `,` ? li.className = `show letter ${this.phrase[i]}` 
                 : li.className = `hide letter ${this.phrase[i]}`;
             ul.appendChild(li);
         }
