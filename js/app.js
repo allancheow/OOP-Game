@@ -2,7 +2,7 @@
  * Project 4 - OOP Game App
  * app.js */
 
-let game;
+let game = new Game();
 const letters = document.querySelectorAll(`.key`);
 const startBtn = document.querySelector(`#btn__reset`);
 

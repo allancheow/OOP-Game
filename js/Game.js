@@ -8,6 +8,11 @@ class Game {
         this.phrases = this.createPhrases();
         this.activePhrase = null;
         this.gameEnded = false;
+        // Customization for sound        
+        this.correctSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/goodbell.mp3");
+        this.wrongSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/bad.mp3");
+        this.winSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/win.mp3");
+        this.loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lose.mp3");
     }
 
     /**
@@ -180,9 +185,16 @@ class Game {
     */
     startGame() {
         const overlay = document.querySelector(`#overlay`);
+        const answer = document.querySelector(`#answer`);
+
         overlay.style.display = `none`;
+        answer !== null ? answer.remove() : null;
         this.activePhrase = this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay();
+        this.correctSound.volume = .4;
+        this.wrongSound.volume = .4;
+        this.winSound.volume = .8;
+        this.loseSound.volume = .4;
     };
 
     /**
@@ -193,7 +205,7 @@ class Game {
         const quoteIndex = Math.floor( Math.random() * this.phrases.length );
         return this.phrases[quoteIndex];
     };
-
+    
     /**
     * Handles onscreen keyboard button clicks
     * @param (HTMLButtonElement) button - The clicked button element
@@ -203,12 +215,14 @@ class Game {
         button.disabled = true;
         if ( this.activePhrase.checkLetter(button.textContent) ) {
             // Update class for correct guess and display on screen
+            this.correctSound.play()
             button.className = `chosen`;
             this.activePhrase.showMatchedLetter(button.textContent)
             // Check if all letters are diaplayed for win
             this.checkForWin() ? this.gameOver(this.checkForWin()) : false;
         } else {
             // Update class for wrong guess and remove life
+            this.wrongSound.play();
             button.className = `wrong`;
             this.removeLife();
         }
@@ -251,8 +265,8 @@ class Game {
         // Return overlay to display end of game message
         overlay.style.display = `flex`;
         // Sets end of game message on screen
-        gameStatus ? (gameOverMsg.textContent = `You've won`, overlay.className = `win`)
-            : (gameOverMsg.textContent = `Sorry, you've lost. Try again!`, overlay.className = `lose`, overlay.insertBefore(answer, gameOverMsg.nextSibling));
+        gameStatus ? (gameOverMsg.textContent = `You've won`, overlay.className = `win`, this.winSound.play())
+            : (gameOverMsg.textContent = `Sorry, you've lost. Try again!`, overlay.className = `lose`, overlay.insertBefore(answer, gameOverMsg.nextSibling), this.loseSound.play());
         this.reset();
         // Boolean value to prevent keypress in app.js file   
         this.gameEnded = true;

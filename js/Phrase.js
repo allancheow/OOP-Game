@@ -40,6 +40,6 @@
     showMatchedLetter(letter) {
         const letters = document.querySelectorAll(`.${letter}`);
         // Update class to show correct guesses
-        this.checkLetter(letter) ? letters.forEach( letter => letter.classList.replace(`hide`, `show`) ) : null;
+        this.checkLetter(letter) ? (letters.forEach( letter => letter.classList.replace(`hide`, `show`) )) : null;
     };
  }
