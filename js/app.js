@@ -2,17 +2,6 @@
  * Project 4 - OOP Game App
  * app.js */
 
-
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {    
-    widthRatio = 0.95;
-    heightRatio = 0.65;
-    let deg = 0;
-    document.body.style.mozTransform = 'rotate('+deg+'deg)'; 
-    document.body.style.msTransform = 'rotate('+deg+'deg)'; 
-    document.body.style.oTransform = 'rotate('+deg+'deg)'; 
-    document.body.style.transform = 'rotate('+deg+'deg)'; 
-}
-
 let game = new Game();
 const letters = document.querySelectorAll(`.key`);
 const startBtn = document.querySelector(`#btn__reset`);
