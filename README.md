@@ -22,3 +22,7 @@ Files provided by @treehouse
 
 File build by me (@allancheow)
 - js (folder)
+<br> 
+
+# Demo
+[Link](https://allancheow.github.io/OOP-Game/)
